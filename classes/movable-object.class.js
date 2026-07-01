@@ -37,16 +37,6 @@ class MovableObject extends DrawableObject{
         this.speedY = 30;
     }
 
-    drawFrame(ctx) {
-        if (this instanceof Character || this instanceof Chicken) {
-            ctx.beginPath();
-            ctx.lineWidth = '5';
-            ctx.strokeStyle = 'blue';
-            ctx.rect(this.x, this.y, this.width, this.height);
-            ctx.stroke();
-        }
-    }
-
     isColliding(movingObject) {
         return this.x + this.width > movingObject.x &&
             this.y + this.height > movingObject.y &&

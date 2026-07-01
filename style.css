@@ -1,9 +1,22 @@
-body{
+@font-face {
+    font-family: 'zabras';
+    src: url('./fonts/zabars.ttf') format('truetype');
+}
+
+body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100dvh;
+    margin: 0;
+    background-image: url("./img/sketch1999-desert-5385998.png");
+    background-position: center;
+    font-family: "zabras", Arial, Helvetica, sans-serif;
+    font-size: 3rem;
+    letter-spacing: 8px;
+    color: black;
 }
 
-canvas{
+canvas {
     background-color: black;
 }
