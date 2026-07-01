@@ -1,6 +1,6 @@
 class World {
     character = new Character();
-    level = level1;    
+    level = level1;
     canvas;
     ctx;
     keyboard;
@@ -9,11 +9,22 @@ class World {
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
-        this.keyboard = keyboard;        
+        this.keyboard = keyboard;
         this.draw();
-        this.setWorld();        
+        this.setWorld();
+        this.checkCollisions();
     }
-    
+
+    checkCollisions() {
+        setInterval(() => {
+            this.level.enemies.forEach(enemy => {
+                if (this.character.isColliding(enemy)) {
+                    this.character.hit();
+                    console.log("Collision energy" + this.character.energy);
+                }
+            });
+        }, 100);
+    }
 
     setWorld() {
         this.character.world = this;
@@ -21,15 +32,12 @@ class World {
 
     addToMap(movingObject) {
         if (movingObject.otherDirection) {
-            this.ctx.save();
-            this.ctx.translate(movingObject.width, 0);
-            this.ctx.scale(-1, 1);
-            movingObject.x = movingObject.x * -1;
+            this.flipImage(movingObject);
         }
-        this.ctx.drawImage(movingObject.img, movingObject.x, movingObject.y, movingObject.width, movingObject.height);
+        movingObject.draw(this.ctx);
+        movingObject.drawFrame(this.ctx);
         if (movingObject.otherDirection) {
-            movingObject.x = movingObject.x * -1;
-            this.ctx.restore();
+            this.flipImageBack(movingObject);
         }
     }
 
@@ -52,5 +60,17 @@ class World {
         requestAnimationFrame(function () {
             self.draw();
         });
+    }
+
+    flipImage(movingObject) {
+        this.ctx.save();
+        this.ctx.translate(movingObject.width, 0);
+        this.ctx.scale(-1, 1);
+        movingObject.x = movingObject.x * -1;
+    }
+
+    flipImageBack(movingObject) {
+        movingObject.x = movingObject.x * -1;
+        this.ctx.restore();
     }
 }
