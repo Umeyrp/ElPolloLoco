@@ -12,11 +12,33 @@ body {
     background-image: url("./img/sketch1999-desert-5385998.png");
     background-position: center;
     font-family: "zabras", Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    margin: 30px;
     font-size: 3rem;
     letter-spacing: 8px;
     color: black;
+    text-shadow: 1px 1px 1px black;
 }
 
 canvas {
     background-color: black;
+    display: block;
+}
+
+@media screen and (max-width: 720px) {
+    canvas {
+        width: 100%;
+    }
+}
+
+@media screen and (max-height: 500px) {
+    canvas {
+        height: 100dvh;
+    }
+
+    h1 {
+        display: none;
+    }
 }
