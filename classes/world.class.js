@@ -5,9 +5,9 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
-    statusbar_energy = new StatusBar("img/7_statusbars/1_statusbar/2_statusbar_health/green/100.png", 0, "energy", 100);
-    statusbar_coin = new StatusBar("img/7_statusbars/1_statusbar/1_statusbar_coin/green/100.png", 50, "coin", 0);
-    statusbar_bottle = new StatusBar("img/7_statusbars/1_statusbar/3_statusbar_bottle/green/100.png", 100, "bottle", 0);
+    healthBar = new HealthBar();
+    coinBar = new CoinBar();
+    bottleBar = new BottleBar();
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -15,18 +15,30 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
-        this.checkCollisions();
+        this.run();
+    }
+
+    run() {
+        setInterval(() => {
+            this.checkCollisions();
+            this.checkThrowObjects();
+        }, 100);
+    }
+
+    checkThrowObjects(){
+        if(this.keyboard.DOWN){
+            let bottle = new ThrowableObject(this.character.x + 100, this.character.y+ 100)
+            this.level.throwableObjects.push(bottle);
+        }
     }
 
     checkCollisions() {
-        setInterval(() => {
-            this.level.enemies.forEach(enemy => {
-                if (this.character.isColliding(enemy)) {
-                    this.character.hit();
-                    this.statusbar_energy.setPercentage(this.character.energy);
-                }
-            });
-        }, 100);
+        this.level.enemies.forEach(enemy => {
+            if (this.character.isColliding(enemy)) {
+                this.character.hit();
+                this.healthBar.setPercentage(this.character.energy);
+            }
+        });
     }
 
     setWorld() {
@@ -55,11 +67,12 @@ class World {
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.clouds);
+        this.addObjectsToMap(this.level.throwableObjects);
         this.ctx.translate(-this.camera_x, 0); //Fix Back
         // ----- Fixed Objects here ---- //
-        this.addToMap(this.statusbar_energy);
-        this.addToMap(this.statusbar_coin);
-        this.addToMap(this.statusbar_bottle);
+        this.addToMap(this.healthBar);
+        this.addToMap(this.coinBar);
+        this.addToMap(this.bottleBar);
         // ----- Fixed Objects here ---- //
         this.ctx.translate(this.camera_x, 0); //Fix Forward
         this.addToMap(this.character);
