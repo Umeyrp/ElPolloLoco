@@ -30,7 +30,7 @@ class Chicken extends MovableObject {
 
     animate() {
         setInterval(() => {
-            if(this.isDead()) return;
+            if (this.isDead()) return;
             this.moveLeft();
         }, 1000 / 60);
 
@@ -40,6 +40,6 @@ class Chicken extends MovableObject {
             } else {
                 this.playAnimation(this.IMAGES_WALKING);
             }
-        }, 500);
+        }, 100);
     }
 }

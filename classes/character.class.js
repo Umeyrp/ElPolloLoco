@@ -164,8 +164,12 @@ class Character extends MovableObject {
         }
     }
 
-    killEnemy(enemy) {
-        enemy.energy = 0;
-        enemy.deadTime = Date.now();
+    damageEnemy(enemy) {
+        if (!enemy.isDead()) {
+            enemy.energy -= 100;
+            if (enemy.isDead()) {
+                enemy.deadTime = Date.now();
+            }
+        }
     }
-}
+}   

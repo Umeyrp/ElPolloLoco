@@ -36,22 +36,37 @@ class World {
         this.level.enemies = this.level.enemies.filter(enemy => {
             if (!enemy.isDead()) {
                 return true;
-            }
-            return Date.now() - enemy.deadTime < 800;
+            }            
+            return Date.now() - enemy.deadTime < 382;
         });
     }
 
     checkCollisions() {
+        this.checkCharacterEnemyCollisions();
+        this.checkBottleCollisions();
+    }
+
+    checkCharacterEnemyCollisions() {
         this.level.enemies.forEach(enemy => {
             if (this.character.isColliding(enemy)) {
                 if (this.character.isAboveGround() && this.character.speedY <= 0) {
-                    this.character.killEnemy(enemy);
+                    this.character.damageEnemy(enemy);
                     this.character.jump();
                 } else {
                     this.character.hit();
                     this.healthBar.setPercentage(this.character.energy);
                 }
             }
+        });
+    }
+
+    checkBottleCollisions() {
+        this.level.enemies.forEach(enemy => {
+            this.level.throwableObjects.forEach(bottle => {
+                if (bottle.isColliding(enemy)) {
+                    this.character.damageEnemy(enemy);
+                }
+            });
         });
     }
 
