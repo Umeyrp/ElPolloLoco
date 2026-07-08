@@ -21,21 +21,36 @@ class World {
     run() {
         setInterval(() => {
             this.checkCollisions();
-        }, 100);
+            this.removeOutOfWindowBottles();
+            this.removeDeadEnemies();
+        }, 1000 / 60);
+    }
+
+    removeOutOfWindowBottles() {
+        this.level.throwableObjects = this.level.throwableObjects.filter(bottle => {
+            return bottle.y <= 500;
+        });
+    }
+
+    removeDeadEnemies() {
+        this.level.enemies = this.level.enemies.filter(enemy => {
+            if (!enemy.isDead()) {
+                return true;
+            }
+            return Date.now() - enemy.deadTime < 800;
+        });
     }
 
     checkCollisions() {
         this.level.enemies.forEach(enemy => {
-            // console.log(this.character.y + this.character.offset.top + this.character.height - this.character.offset.top, "char y+height");
-            // console.log(enemy.y + enemy.offset.top, "enemy y");
             if (this.character.isColliding(enemy)) {
-                if (this.character.isCollidingTop(enemy)) {
-                    console.log("top");
-
-                    return;
+                if (this.character.isAboveGround() && this.character.speedY <= 0) {
+                    this.character.killEnemy(enemy);
+                    this.character.jump();
+                } else {
+                    this.character.hit();
+                    this.healthBar.setPercentage(this.character.energy);
                 }
-                this.character.hit();
-                this.healthBar.setPercentage(this.character.energy);
             }
         });
     }

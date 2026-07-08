@@ -103,7 +103,6 @@ class Character extends MovableObject {
                 this.throwBottle();
                 this.resetSleepingState();
             }
-
             this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
 
@@ -126,7 +125,7 @@ class Character extends MovableObject {
         }, 50);
     }
 
-    async throwBottle() {
+    throwBottle() {
         if (this.bottles <= 0) return;
         if (Date.now() - this.lastThrow < 1000) return;
         this.lastThrow = Date.now();
@@ -163,5 +162,10 @@ class Character extends MovableObject {
             }
             this.lastSleepingFrameTime = now;
         }
+    }
+
+    killEnemy(enemy) {
+        enemy.energy = 0;
+        enemy.deadTime = Date.now();
     }
 }

@@ -10,6 +10,8 @@ class MovableObject extends DrawableObject {
             if (this.isAboveGround() || this.speedY > 0) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
+            } else {
+                this.speedY = 0;
             }
         }, 1000 / 60);
     }
@@ -45,26 +47,19 @@ class MovableObject extends DrawableObject {
             this.y + this.offset.top < mo.y + mo.offset.top + mo.height - mo.offset.top - mo.offset.bottom;
     }
 
-    isCollidingTop(mo) {
-        // console.log(this.y + this.offset.top + this.height - this.offset.top);
-        // console.log(mo.y + mo.offset.top);
-
-        return this.y + this.offset.top + this.height - this.offset.top - this.offset.bottom == mo.y + mo.offset.top;
-    }
-
     hit() {
+        if (Date.now() - this.lastHit < 100) return;
+        this.lastHit = Date.now();
         this.energy -= 5;
         if (this.energy < 0) {
             this.energy = 0;
-        } else {
-            this.lastHit = new Date().getTime();
         }
     }
 
     isHurt() {
-        let timepassed = new Date().getTime() - this.lastHit;
-        timepassed = timepassed / 1000;
-        return timepassed < 0.5;
+        let timepassed = Date.now() - this.lastHit;
+        let seconds = timepassed / 1000;
+        return seconds < 0.5;
     }
 
     isDead() {
