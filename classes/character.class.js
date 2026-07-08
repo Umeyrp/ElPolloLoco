@@ -58,6 +58,7 @@ class Character extends MovableObject {
     y = 155;
     world;
     energy = 100;
+    bottles = 100;
     offset = {
         top: 115,
         right: 20,
@@ -87,18 +88,15 @@ class Character extends MovableObject {
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.moveRight();
                 this.otherDirection = false;
-                this.resetSleepingState();
             }
 
             if (this.world.keyboard.LEFT && this.x > 0) {
                 this.moveLeft();
                 this.otherDirection = true;
-                this.resetSleepingState();
             }
 
             if (this.world.keyboard.UP && !this.isAboveGround()) {
                 this.jump();
-                this.resetSleepingState();
             }
 
             if (this.world.keyboard.DOWN) {
@@ -111,12 +109,16 @@ class Character extends MovableObject {
 
         setInterval(() => {
             if (this.isDead()) {
+                this.resetSleepingState();
                 this.playAnimation(this.IMAGES_DEAD);
             } else if (this.isHurt()) {
+                this.resetSleepingState();
                 this.playAnimation(this.IMAGES_HURT);
             } else if (this.isAboveGround()) {
+                this.resetSleepingState();
                 this.playAnimation(this.IMAGES_JUMPING);
             } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+                this.resetSleepingState();
                 this.playAnimation(this.IMAGES_WALKING);
             } else {
                 this.playSleepingAnimation();
@@ -124,14 +126,15 @@ class Character extends MovableObject {
         }, 50);
     }
 
-    throwBottle() {
-        let now = Date.now();
-        if (now - this.lastThrow < 1000) {
-            return; // noch keine Sekunde vergangen
-        }
-        this.lastThrow = now;
+    async throwBottle() {
+        if (this.bottles <= 0) return;
+        if (Date.now() - this.lastThrow < 1000) return;
+        this.lastThrow = Date.now();
         let bottle = new ThrowableObject(this.x + 100, this.y + 100);
+        bottle.throw();
         this.world.level.throwableObjects.push(bottle);
+        this.bottles -= 20;
+        this.world.bottleBar.setPercentage(this.bottles);
     }
 
     resetSleepingState() {
@@ -151,8 +154,6 @@ class Character extends MovableObject {
 
         const now = new Date().getTime();
         if (now - this.lastSleepingFrameTime >= 1000) {
-            console.log(this.sleepingFrameIndex);
-
             this.sleepingFrameIndex++;
             if (this.sleepingFrameIndex < this.IMAGES_SLEEPING.length) {
                 this.loadImage(this.IMAGES_SLEEPING[this.sleepingFrameIndex]);

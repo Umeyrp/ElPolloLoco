@@ -16,7 +16,7 @@ class MovableObject extends DrawableObject {
 
     isAboveGround() {
         if (this instanceof ThrowableObject) { return true }
-        return this.y < 180;
+        return this.y < 145;
     }
 
     playAnimation(images) {
@@ -38,8 +38,18 @@ class MovableObject extends DrawableObject {
         this.speedY = 30;
     }
 
-    isColliding(mo) {        
-        return this.x + this.offset.left + this.width - this.offset.right - this.offset.left > mo.x + mo.offset.left && this.y + this.offset.top + this.height - this.offset.top - this.offset.bottom > mo.y + mo.offset.top && this.x + this.offset.left < mo.x + mo.offset.left + mo.width - mo.offset.left - mo.offset.right && this.y + this.offset.top < mo.y + mo.offset.top + mo.height - mo.offset.top - mo.offset.bottom;
+    isColliding(mo) {
+        return this.x + this.offset.left + this.width - this.offset.right - this.offset.left > mo.x + mo.offset.left &&
+            this.y + this.offset.top + this.height - this.offset.top - this.offset.bottom > mo.y + mo.offset.top &&
+            this.x + this.offset.left < mo.x + mo.offset.left + mo.width - mo.offset.left - mo.offset.right &&
+            this.y + this.offset.top < mo.y + mo.offset.top + mo.height - mo.offset.top - mo.offset.bottom;
+    }
+
+    isCollidingTop(mo) {
+        // console.log(this.y + this.offset.top + this.height - this.offset.top);
+        // console.log(mo.y + mo.offset.top);
+
+        return this.y + this.offset.top + this.height - this.offset.top - this.offset.bottom == mo.y + mo.offset.top;
     }
 
     hit() {
