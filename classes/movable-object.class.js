@@ -26,6 +26,7 @@ class MovableObject extends DrawableObject {
         let path = images[i];
         this.img = this.imageCache[path];
         this.currentImage++;
+        return i;
     }
 
     moveRight() {
@@ -47,12 +48,15 @@ class MovableObject extends DrawableObject {
             this.y + this.offset.top < mo.y + mo.offset.top + mo.height - mo.offset.top - mo.offset.bottom;
     }
 
-    hit() {
+    hit(damage) {
         if (Date.now() - this.lastHit < 100) return;
         this.lastHit = Date.now();
-        this.energy -= 5;
-        if (this.energy < 0) {
-            this.energy = 0;
+        if (!this.isDead()) {
+            this.energy -= damage;
+            if (this.isDead()) {
+                this.deadTime = Date.now();
+                this.energy = 0;
+            }
         }
     }
 

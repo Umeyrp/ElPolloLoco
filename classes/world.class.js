@@ -36,7 +36,7 @@ class World {
         this.level.enemies = this.level.enemies.filter(enemy => {
             if (!enemy.isDead()) {
                 return true;
-            }            
+            }
             return Date.now() - enemy.deadTime < 382;
         });
     }
@@ -50,10 +50,10 @@ class World {
         this.level.enemies.forEach(enemy => {
             if (this.character.isColliding(enemy)) {
                 if (this.character.isAboveGround() && this.character.speedY <= 0) {
-                    this.character.damageEnemy(enemy);
+                    this.character.jumpOnEnemy(enemy);
                     this.character.jump();
                 } else {
-                    this.character.hit();
+                    this.character.hit(5);
                     this.healthBar.setPercentage(this.character.energy);
                 }
             }
@@ -64,7 +64,7 @@ class World {
         this.level.enemies.forEach(enemy => {
             this.level.throwableObjects.forEach(bottle => {
                 if (bottle.isColliding(enemy)) {
-                    this.character.damageEnemy(enemy);
+                    this.character.bottleHitEnemy(enemy);
                 }
             });
         });

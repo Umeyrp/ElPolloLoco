@@ -52,6 +52,11 @@ class Character extends MovableObject {
         "img/2_character_pepe/1_idle/long_idle/I-13.png",
         "img/2_character_pepe/1_idle/long_idle/I-14.png",
         "img/2_character_pepe/1_idle/long_idle/I-15.png",
+        "img/2_character_pepe/1_idle/long_idle/I-16.png",
+        "img/2_character_pepe/1_idle/long_idle/I-17.png",
+        "img/2_character_pepe/1_idle/long_idle/I-18.png",
+        "img/2_character_pepe/1_idle/long_idle/I-19.png",
+        "img/2_character_pepe/1_idle/long_idle/I-20.png",
     ];
 
     height = 280;
@@ -146,30 +151,27 @@ class Character extends MovableObject {
         if (!this.isSleeping) {
             this.isSleeping = true;
             this.sleepingFrameIndex = 0;
-            this.lastSleepingFrameTime = new Date().getTime();
+            this.lastSleepingFrameTime = Date.now();
             this.loadImage(this.IMAGES_SLEEPING[0]);
             return;
         }
-
-        const now = new Date().getTime();
+        const now = Date.now();
         if (now - this.lastSleepingFrameTime >= 1000) {
             this.sleepingFrameIndex++;
-            if (this.sleepingFrameIndex < this.IMAGES_SLEEPING.length) {
-                this.loadImage(this.IMAGES_SLEEPING[this.sleepingFrameIndex]);
-            } else {
-                this.sleepingFrameIndex = this.IMAGES_SLEEPING.length - 1;
-                this.loadImage(this.IMAGES_SLEEPING[this.sleepingFrameIndex]);
+            const loopStart = this.IMAGES_SLEEPING.length - 10;
+            if (this.sleepingFrameIndex >= this.IMAGES_SLEEPING.length) {
+                this.sleepingFrameIndex = loopStart;
             }
+            this.loadImage(this.IMAGES_SLEEPING[this.sleepingFrameIndex]);
             this.lastSleepingFrameTime = now;
         }
     }
 
-    damageEnemy(enemy) {
-        if (!enemy.isDead()) {
-            enemy.energy -= 100;
-            if (enemy.isDead()) {
-                enemy.deadTime = Date.now();
-            }
-        }
+    jumpOnEnemy(enemy) {
+        enemy.hit(100);
+    }
+
+    bottleHitEnemy(enemy) {
+        enemy.hit(100);
     }
 }   
