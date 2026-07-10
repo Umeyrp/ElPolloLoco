@@ -1,13 +1,15 @@
 class World {
     character = new Character();
     level = level1;
+    endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
     canvas;
     ctx;
     keyboard;
     camera_x = 0;
-    healthBar = new HealthBar();
+    healthBarCharacter = new HealthBar(this.character.energy);
+    healthBarEndboss = new HealthBar(this.endboss.energy, this.endboss.x + 55, undefined, HealthBar.IMAGES_ENDBOSS);
     coinBar = new CoinBar();
-    bottleBar = new BottleBar(undefined, this.character.bottles);
+    bottleBar = new BottleBar(this.character.bottles);
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -20,6 +22,7 @@ class World {
 
     run() {
         setInterval(() => {
+            this.healthBarEndboss.x = this.endboss.x + 55;
             this.checkCollisions();
             this.removeOutOfWindowBottles();
             this.removeDeadEnemies();
@@ -54,7 +57,7 @@ class World {
                     this.character.jump();
                 } else {
                     this.character.hit(5);
-                    this.healthBar.setPercentage(this.character.energy);
+                    this.healthBarCharacter.setPercentage(this.character.energy);
                 }
             }
         });
@@ -65,6 +68,9 @@ class World {
             this.level.throwableObjects.forEach(bottle => {
                 if (bottle.isColliding(enemy)) {
                     this.character.bottleHitEnemy(enemy);
+                    if (enemy instanceof Endboss) {
+                        this.healthBarEndboss.setPercentage(this.endboss.energy);
+                    }
                 }
             });
         });
@@ -96,9 +102,10 @@ class World {
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.clouds);
+        this.addToMap(this.healthBarEndboss);
         this.ctx.translate(-this.camera_x, 0); //Fix Back
         // ----- Fixed Objects here ---- //
-        this.addToMap(this.healthBar);
+        this.addToMap(this.healthBarCharacter);
         this.addToMap(this.coinBar);
         this.addToMap(this.bottleBar);
         // ----- Fixed Objects here ---- //

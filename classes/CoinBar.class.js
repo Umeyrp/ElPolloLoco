@@ -8,7 +8,7 @@ class CoinBar extends StatusBar {
         "img/7_statusbars/1_statusbar/1_statusbar_coin/green/100.png",
     ];
 
-    constructor(y = 50, percentage = 0) {
-        super("img/7_statusbars/1_statusbar/1_statusbar_coin/green/100.png", y, percentage, CoinBar.IMAGES);
+    constructor(percentage = 0, x = 50, y = 50) {
+        super("img/7_statusbars/1_statusbar/1_statusbar_coin/green/100.png", percentage, x, y, CoinBar.IMAGES);
     }
 }

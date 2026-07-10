@@ -2,7 +2,8 @@ class Endboss extends MovableObject {
     height = 500;
     width = 300;
     y = -20;
-    energy = 500;
+    x = 1800;
+    energy = 750;
     offset = {
         top: 90,
         right: 10,
@@ -31,11 +32,17 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
-        this.x = 1800;
+        this.speed = 0.75 + Math.random() * 0.25;
         this.animate();
     }
 
     animate() {
+
+        setInterval(() => {
+            if (this.isDead()) return;
+            this.moveLeft();
+        }, 1000 / 60);
+
         setInterval(() => {
             if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);

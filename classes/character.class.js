@@ -172,6 +172,6 @@ class Character extends MovableObject {
     }
 
     bottleHitEnemy(enemy) {
-        enemy.hit(100);
+        enemy.hit(150);
     }
 }   
