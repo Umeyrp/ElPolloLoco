@@ -6,11 +6,11 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
-    healthBarCharacter = new HealthBar(this.character.energy);
-    healthBarEndboss = new HealthBar(this.endboss.energy, this.endboss.x + 55, undefined, HealthBar.IMAGES_ENDBOSS);
-    coinBar = new CoinBar();
-    bottleBar = new BottleBar(this.character.bottles);
-
+    healthBarCharacter = new HealthBar(this.character.energy, this.character.MAX_ENERGY);
+    healthBarEndboss = new HealthBar(this.endboss.energy, this.endboss.MAX_ENERGY, this.endboss.x + 55, undefined, HealthBar.IMAGES_ENDBOSS);
+    coinBar = new CoinBar(START_COINS, MAX_COINS);
+    bottleBar = new BottleBar(this.character.bottles, MAX_BOTTLES);
+    
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;

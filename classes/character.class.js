@@ -63,7 +63,8 @@ class Character extends MovableObject {
     y = 155;
     world;
     energy = 100;
-    bottles = 100;
+    MAX_ENERGY = 100;
+    bottles = 5;
     offset = {
         top: 115,
         right: 20,
@@ -137,7 +138,7 @@ class Character extends MovableObject {
         let bottle = new ThrowableObject(this.x + 100, this.y + 100);
         bottle.throw();
         this.world.level.throwableObjects.push(bottle);
-        this.bottles -= 20;
+        this.bottles -= 1;
         this.world.bottleBar.setPercentage(this.bottles);
     }
 

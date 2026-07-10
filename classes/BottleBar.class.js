@@ -8,7 +8,7 @@ class BottleBar extends StatusBar {
         "img/7_statusbars/1_statusbar/3_statusbar_bottle/green/100.png",
     ];
 
-    constructor(percentage = 0, x = 50, y = 100) {
-        super("img/7_statusbars/1_statusbar/3_statusbar_bottle/green/100.png", percentage, x, y, BottleBar.IMAGES);
+    constructor(percentage = 0, MAX_PERCENTAGE, x = 50, y = 100) {
+        super("img/7_statusbars/1_statusbar/3_statusbar_bottle/green/100.png", percentage, MAX_PERCENTAGE, x, y, BottleBar.IMAGES);
     }
 }

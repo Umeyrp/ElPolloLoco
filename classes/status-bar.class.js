@@ -1,13 +1,13 @@
 class StatusBar extends DrawableObject {
-    percentage;
     width = 200;
     height = 60;
-    fullPercentage;
+    percentage;
+    MAX_PERCENTAGE;
     images;
     x;
     y;
 
-    constructor(path, percentage, x, y, images) {
+    constructor(path, percentage, MAX_PERCENTAGE, x, y, images) {
         super();
         this.images = images;
         this.loadImage(path);
@@ -15,7 +15,7 @@ class StatusBar extends DrawableObject {
         this.y = y;
         this.x = x;
         this.percentage = percentage;
-        this.fullPercentage = percentage;
+        this.MAX_PERCENTAGE = MAX_PERCENTAGE;
         this.setPercentage(percentage);
     }
 
@@ -35,11 +35,11 @@ class StatusBar extends DrawableObject {
     }
 
     resolveImageIndex() {
-        if (this.percentage >= this.fullPercentage) return 5;
-        if (this.percentage >= this.fullPercentage * 0.8) return 4;
-        if (this.percentage >= this.fullPercentage * 0.6) return 3;
-        if (this.percentage >= this.fullPercentage * 0.4) return 2;
-        if (this.percentage > this.fullPercentage * 0) return 1;
+        if (this.percentage >= this.MAX_PERCENTAGE) return 5;
+        if (this.percentage >= this.MAX_PERCENTAGE * 0.8) return 4;
+        if (this.percentage >= this.MAX_PERCENTAGE * 0.6) return 3;
+        if (this.percentage >= this.MAX_PERCENTAGE * 0.4) return 2;
+        if (this.percentage > this.MAX_PERCENTAGE * 0) return 1;
         return 0;
     }
 }

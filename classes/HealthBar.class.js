@@ -17,7 +17,7 @@ class HealthBar extends StatusBar {
         "img/7_statusbars/2_statusbar_endboss/green/green100.png",
     ];
 
-    constructor(percentage = 100, x = 50, y = 0, images = HealthBar.IMAGES) {
-        super(images[5], percentage, x, y, images);
+    constructor(percentage = 100, MAX_PERCENTAGE, x = 50, y = 0, images = HealthBar.IMAGES) {
+        super(images[5], percentage, MAX_PERCENTAGE, x, y, images);
     }
 }
