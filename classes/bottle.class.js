@@ -1,17 +1,16 @@
 class Bottle extends CollectableObject {
     offset = {
-        top: 10,
-        right: 10,
-        bottom: 7,
-        left: 10
+        top: 15,
+        right: 15,
+        bottom: 10,
+        left: 35
     }
-    y = 360;
-    height = 60;
-    width = 50;
+    y = 345;
+    height = 80;
+    width = 80;
 
     constructor() {
         super();
-        this.loadImage("img/6_salsa_bottle/salsa_bottle.png");
-
+        this.loadImage("img/6_salsa_bottle/1_salsa_bottle_on_ground.png");
     }
 }

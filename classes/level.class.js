@@ -2,15 +2,15 @@ class Level {
     enemies;
     clouds;
     backgroundObjects;
-    throwableObjects;
+    thrownBottles;
     collectableObjects;
     level_end_x = 1500;
 
-    constructor(enemies, clouds, backgroundObjects, throwableObjects, collectableObjects) {
+    constructor(enemies, clouds, backgroundObjects, thrownBottles, collectableObjects) {
         this.enemies = enemies;
         this.clouds = clouds;
         this.backgroundObjects = backgroundObjects;
-        this.throwableObjects = throwableObjects;
+        this.thrownBottles = thrownBottles;
         this.collectableObjects = collectableObjects;
     }
 }

@@ -49,8 +49,6 @@ class MovableObject extends DrawableObject {
     }
 
     hit(damage) {
-        console.log(this.lastHit);
-        
         if (Date.now() - this.lastHit < 350) return;
         this.lastHit = Date.now();
         if (!this.isDead()) {
