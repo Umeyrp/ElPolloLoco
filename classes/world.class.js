@@ -10,7 +10,7 @@ class World {
     healthBarEndboss = new HealthBar(this.endboss.energy, this.endboss.MAX_ENERGY, this.endboss.x + 55, undefined, HealthBar.IMAGES_ENDBOSS);
     coinBar = new CoinBar(START_COINS, MAX_COINS);
     bottleBar = new BottleBar(this.character.bottles, MAX_BOTTLES);
-    
+
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
@@ -22,11 +22,15 @@ class World {
 
     run() {
         setInterval(() => {
-            this.healthBarEndboss.x = this.endboss.x + 55;
+            this.moveEndbossHealthbar();
             this.checkCollisions();
             this.removeOutOfWindowBottles();
             this.removeDeadEnemies();
         }, 1000 / 60);
+    }
+
+    moveEndbossHealthbar() {
+        this.healthBarEndboss.x = this.endboss.x + 55;
     }
 
     removeOutOfWindowBottles() {
