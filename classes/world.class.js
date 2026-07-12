@@ -10,7 +10,7 @@ class World {
     healthBarEndboss = new HealthBar(this.endboss.energy, this.endboss.MAX_ENERGY, this.endboss.x + 55, undefined, HealthBar.IMAGES_ENDBOSS);
     coinBar = new CoinBar(START_COINS, MAX_COINS);
     bottleBar = new BottleBar(this.character.bottles, MAX_BOTTLES);
-    
+
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
@@ -40,7 +40,7 @@ class World {
             if (!enemy.isDead()) {
                 return true;
             }
-            return Date.now() - enemy.deadTime < 382;
+            return Date.now() - enemy.deadTime < 300;
         });
     }
 
@@ -113,6 +113,7 @@ class World {
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.throwableObjects);
+        this.addObjectsToMap(this.level.collectableObjects);
         this.ctx.translate(-this.camera_x, 0);
         let self = this;
         requestAnimationFrame(function () {
