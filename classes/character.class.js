@@ -135,7 +135,7 @@ class Character extends MovableObject {
         if (this.bottles <= 0) return;
         if (Date.now() - this.lastThrow < 1000) return;
         this.lastThrow = Date.now();
-        let bottle = new ThrowableObject(this.x + 100, this.y + 100);
+        let bottle = new ThrowableObject(this.x + 30, this.y + 150);
         bottle.throw();
         this.world.level.throwableObjects.push(bottle);
         this.bottles -= 1;

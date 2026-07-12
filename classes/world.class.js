@@ -44,7 +44,7 @@ class World {
             if (!enemy.isDead()) {
                 return true;
             }
-            return Date.now() - enemy.deadTime < 382;
+            return Date.now() - enemy.deadTime < 300;
         });
     }
 
@@ -117,6 +117,7 @@ class World {
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.throwableObjects);
+        this.addObjectsToMap(this.level.collectableObjects);
         this.ctx.translate(-this.camera_x, 0);
         let self = this;
         requestAnimationFrame(function () {

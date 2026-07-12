@@ -31,6 +31,14 @@ const level1 = new Level(
         new BackgroundObject("img/5_background/layers/1_first_layer/1.png", 720 * 2)
     ],
     [
-        new ThrowableObject(),
+        new ThrowableObject(600, 360),
+    ],
+    [
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Bottle(),
+        new Bottle(),
+        new Bottle(),
     ]
 );
