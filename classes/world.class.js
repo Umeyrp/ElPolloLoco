@@ -30,7 +30,7 @@ class World {
     }
 
     removeOutOfWindowBottles() {
-        this.level.throwableObjects = this.level.throwableObjects.filter(bottle => {
+        this.level.thrownBottles = this.level.thrownBottles.filter(bottle => {
             return bottle.y <= 500;
         });
     }
@@ -47,6 +47,7 @@ class World {
     checkCollisions() {
         this.checkCharacterEnemyCollisions();
         this.checkBottleCollisions();
+        this.checkCollectableCollisions();
     }
 
     checkCharacterEnemyCollisions() {
@@ -65,7 +66,7 @@ class World {
 
     checkBottleCollisions() {
         this.level.enemies.forEach(enemy => {
-            this.level.throwableObjects.forEach(bottle => {
+            this.level.thrownBottles.forEach(bottle => {
                 if (bottle.isColliding(enemy)) {
                     this.character.bottleHitEnemy(enemy);
                     if (enemy instanceof Endboss) {
@@ -73,6 +74,24 @@ class World {
                     }
                 }
             });
+        });
+    }
+
+    checkCollectableCollisions() {
+        this.level.collectableObjects.forEach((object, index) => {
+            if (this.character.isColliding(object)) {
+                if (object instanceof Coin) {
+                    this.level.collectableObjects.splice(index, 1);
+                    this.character.coins += 1;
+                    this.coinBar.setPercentage(this.character.coins);
+                } else {
+                    if (this.character.bottles < 5) {
+                        this.level.collectableObjects.splice(index, 1);
+                        this.character.bottles += 1;
+                        this.bottleBar.setPercentage(this.character.bottles);
+                    }
+                }
+            }
         });
     }
 
@@ -112,7 +131,7 @@ class World {
         this.ctx.translate(this.camera_x, 0); //Fix Forward
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
-        this.addObjectsToMap(this.level.throwableObjects);
+        this.addObjectsToMap(this.level.thrownBottles);
         this.addObjectsToMap(this.level.collectableObjects);
         this.ctx.translate(-this.camera_x, 0);
         let self = this;
