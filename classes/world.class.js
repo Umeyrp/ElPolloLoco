@@ -72,6 +72,7 @@ class World {
         this.level.enemies.forEach(enemy => {
             this.level.thrownBottles.forEach(bottle => {
                 if (bottle.isColliding(enemy)) {
+                    bottle.splashed = true;
                     this.character.bottleHitEnemy(enemy);
                     if (enemy instanceof Endboss) {
                         this.healthBarEndboss.setPercentage(this.endboss.energy);
