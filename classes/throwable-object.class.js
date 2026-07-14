@@ -24,18 +24,28 @@ class ThrowableObject extends MovableObject {
     speedY = 25;
     splashed = false;
 
-    constructor(x, y) {
+    constructor(x, y, otherDirection) {
         super();
         this.loadImage("img/6_salsa_bottle/salsa_bottle.png");
         this.loadImages(this.IMAGES_FLYING);
         this.loadImages(this.IMAGES_SPLASH);
         this.x = x;
         this.y = y;
+        this.otherDirection = otherDirection;
         this.height = 60;
         this.width = 50;
         this.applyGravity();
         this.throw();
         this.animate();
+        this.checkThrownBottlesHitGround();
+    }
+
+    checkThrownBottlesHitGround() {
+        setInterval(() => {
+            if (!this.splashed && this.y >= 400) {
+                this.splashed = true;
+            }
+        }, 1000 / 25);
     }
 
     animate() {
@@ -50,7 +60,7 @@ class ThrowableObject extends MovableObject {
 
     throw() {
         setInterval(() => {
-            this.x += 18;
+            this.x += this.otherDirection ? -18 : 18;
         }, 1000 / 30);
     }
 }

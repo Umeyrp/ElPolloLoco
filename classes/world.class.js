@@ -29,6 +29,18 @@ class World {
         }, 1000 / 60);
     }
 
+    checkCollisions() {
+        this.checkCharacterEnemyCollisions();
+        this.checkBottleCollisions();
+        this.checkCollectableCollisions();
+    }
+
+    removeHitBottles(bottleIndex) {
+        setTimeout(() => {
+            this.level.thrownBottles.splice(bottleIndex, 1);
+        }, 100);
+    }
+
     moveEndbossHealthbar() {
         this.healthBarEndboss.x = this.endboss.x + 55;
     }
@@ -48,12 +60,6 @@ class World {
         });
     }
 
-    checkCollisions() {
-        this.checkCharacterEnemyCollisions();
-        this.checkBottleCollisions();
-        this.checkCollectableCollisions();
-    }
-
     checkCharacterEnemyCollisions() {
         this.level.enemies.forEach(enemy => {
             if (this.character.isColliding(enemy)) {
@@ -70,13 +76,14 @@ class World {
 
     checkBottleCollisions() {
         this.level.enemies.forEach(enemy => {
-            this.level.thrownBottles.forEach(bottle => {
+            this.level.thrownBottles.forEach((bottle, index) => {
                 if (bottle.isColliding(enemy)) {
                     bottle.splashed = true;
                     this.character.bottleHitEnemy(enemy);
                     if (enemy instanceof Endboss) {
                         this.healthBarEndboss.setPercentage(this.endboss.energy);
                     }
+                    this.removeHitBottles(index);
                 }
             });
         });
