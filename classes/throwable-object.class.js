@@ -42,8 +42,9 @@ class ThrowableObject extends MovableObject {
 
     checkThrownBottlesHitGround() {
         setInterval(() => {
-            if (!this.splashed && this.y >= 400) {
+            if (!this.splashed && this.y >= 300) {
                 this.splashed = true;
+                Sound.playSound(Sound.BOTTLE_HIT);
             }
         }, 1000 / 25);
     }

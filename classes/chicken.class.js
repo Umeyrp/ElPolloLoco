@@ -44,4 +44,8 @@ class Chicken extends MovableObject {
             }
         }, 100);
     }
+
+    playHurtSound() {
+        Sound.playSound(Sound.CHICKEN_DEAD);
+    }
 }

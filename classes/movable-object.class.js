@@ -8,7 +8,11 @@ class MovableObject extends DrawableObject {
     applyGravity() {
         setInterval(() => {
             if (this.isAboveGround() || this.speedY > 0) {
-                this.y -= this.speedY;
+                if (this instanceof Character && this.y - this.speedY > 155) {
+                    this.y = this.GROUND_Y;
+                } else {
+                    this.y -= this.speedY;
+                }
                 this.speedY -= this.acceleration;
             } else {
                 this.speedY = 0;
@@ -18,7 +22,7 @@ class MovableObject extends DrawableObject {
 
     isAboveGround() {
         if (this instanceof ThrowableObject) { return true }
-        return this.y < 145;
+        return this.y < this.GROUND_Y;
     }
 
     playAnimation(images) {
@@ -29,16 +33,16 @@ class MovableObject extends DrawableObject {
         return i;
     }
 
+    jump() {
+        this.speedY = 30;
+    }
+
     moveRight() {
         this.x += this.speed;
     }
 
     moveLeft() {
         this.x -= this.speed;
-    }
-
-    jump() {
-        this.speedY = 30;
     }
 
     isColliding(mo) {
@@ -50,6 +54,7 @@ class MovableObject extends DrawableObject {
 
     hit(damage) {
         if (Date.now() - this.lastHit < 350) return;
+        this.playHurtSound();
         this.lastHit = Date.now();
         if (!this.isDead()) {
             this.energy -= damage;

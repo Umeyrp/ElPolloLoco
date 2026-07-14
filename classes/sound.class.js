@@ -1,15 +1,16 @@
 class Sound {
-    static GAME_START = new Audio('audio/game/gameStart.mp3');
-    static CHARACTER_WALK = new Audio('../audios/character_walk.mp3');
-    static CHARACTER_JUMP = new Audio('audio/character/characterJump.wav');
-    static CHARACTER_HURT = new Audio('audio/character/characterDamage.mp3');
-    static CHARACTER_SNORE = new Audio('audio/character/characterSnoring.mp3');
-    static CHARACTER_DEAD = new Audio('../audios/character_dead.mp3');
-    static CHICKEN_DEAD = new Audio('audio/chicken/chickenDead.mp3');
-    static BOTTLE_HIT = new Audio('audio/throwable/bottleBreak.mp3');
-    static COLLECT_COIN = new Audio('audio/collectibles/bottleCollectSound.wav');
-    static COLLECT_BOTTLE = new Audio('audio/collectibles/collectSound.wav');
-    static BACKGROUND_MUSIC = new Audio('audio/game/bensound-funkysuspense.mp3')
+    static CHARACTER_WALK = Sound.create('../audios/character_walk.mp3', 0.05);
+    static CHARACTER_JUMP = Sound.create('../audios/character_jump.mp3', 0.05);
+    static CHARACTER_HURT = Sound.create('../audios/character_hurt.mp3', 0.05);
+    static CHARACTER_SNORE = Sound.create('../audios/character_snore.mp3', 0.08, true);
+    static CHARACTER_DEAD = Sound.create('../audios/character_dead.mp3', 0.3);
+    static CHICKEN_DEAD = Sound.create('../audios/chicken_dead.mp3', 0.1);
+    static CHICK_DEAD = Sound.create('../audios/chick_dead.mp3', 0.1);
+    static BOTTLE_THROW = Sound.create('../audios/bottle_throw.mp3', 0.2);
+    static BOTTLE_HIT = Sound.create('../audios/bottle_break.mp3', 0.15);
+    static COLLECT_COIN = Sound.create('../audios/collect_coin.mp3', 0.1);
+    static COLLECT_BOTTLE = Sound.create('../audios/collect_bottle.mp3', 0.15);
+    static BACKGROUND_MUSIC = Sound.create('../audios/background_music.mp3', 0.4, true);
     static allSounds = [
         Sound.CHARACTER_WALK,
         Sound.CHARACTER_DEAD,
@@ -17,25 +18,26 @@ class Sound {
         Sound.CHARACTER_JUMP,
         Sound.CHARACTER_SNORE,
         Sound.CHICKEN_DEAD,
+        Sound.BOTTLE_THROW,
         Sound.BOTTLE_HIT,
         Sound.COLLECT_BOTTLE,
         Sound.COLLECT_COIN,
-        Sound.GAME_START,
         Sound.BACKGROUND_MUSIC
     ];
     static Muted = false;
 
+    static create(path, volume, loop = false) {
+        const audio = new Audio(path);
+        audio.volume = volume;
+        audio.loop = loop;
+        return audio;
+    }
+
     static playSound(sound) {
-        if (Sound.isMuted) {
+        if (Sound.Muted) {
             return;
         }
-        sound.volume = 0.2;
-        if (sound === Sound.BACKGROUND_MUSIC) {
-            sound.loop = true;
-            sound.volume = 1;
-        } else {
-            sound.currentTime = 0;
-        }
+        sound.currentTime = 0;
         sound.play();
     }
 

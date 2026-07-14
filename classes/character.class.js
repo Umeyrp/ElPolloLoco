@@ -61,6 +61,7 @@ class Character extends MovableObject {
 
     height = 280;
     y = 155;
+    GROUND_Y = 155;
     world;
     energy = 100;
     MAX_ENERGY = 100;
@@ -73,6 +74,7 @@ class Character extends MovableObject {
         left: 20
     };
 
+    isWalking;
     isSleeping = false;
     sleepingFrameIndex = 0;
     lastSleepingFrameTime = 0;
@@ -91,6 +93,11 @@ class Character extends MovableObject {
     }
 
     animate() {
+        this.checkButtonInterval();
+        this.checkStatusInterval();
+    }
+
+    checkButtonInterval() {
         setInterval(() => {
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.moveRight();
@@ -104,6 +111,8 @@ class Character extends MovableObject {
 
             if (this.world.keyboard.UP && !this.isAboveGround()) {
                 this.jump();
+                Sound.playSound(Sound.CHARACTER_JUMP);
+                this.resetSleepingState();
             }
 
             if (this.world.keyboard.DOWN) {
@@ -112,60 +121,87 @@ class Character extends MovableObject {
             }
             this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
+    }
 
+    checkStatusInterval() {
         setInterval(() => {
             if (this.isDead()) {
-                this.resetSleepingState();
+                this.resetStatus();
                 this.playAnimation(this.IMAGES_DEAD);
             } else if (this.isHurt()) {
                 this.resetSleepingState();
                 this.playAnimation(this.IMAGES_HURT);
             } else if (this.isAboveGround()) {
-                this.resetSleepingState();
+                this.resetStatus();
                 this.playAnimation(this.IMAGES_JUMPING);
             } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
                 this.resetSleepingState();
                 this.playAnimation(this.IMAGES_WALKING);
+                if (!this.isWalking) {
+                    Sound.playSound(Sound.CHARACTER_WALK);
+                    this.isWalking = true;
+                }
             } else {
+                this.stopWalkingSound();
                 this.playSleepingAnimation();
             }
         }, 50);
+    }   
+
+    resetStatus() {
+        this.resetSleepingState();
+        this.stopWalkingSound();
+    }
+
+    stopWalkingSound() {
+        if (this.isWalking) {
+            Sound.CHARACTER_WALK.pause();
+            this.isWalking = false;
+        }
     }
 
     throwBottle() {
         if (this.bottles <= 0) return;
         if (Date.now() - this.lastThrow < 1000) return;
+        Sound.playSound(Sound.BOTTLE_THROW);
         this.lastThrow = Date.now();
         let bottle = new ThrowableObject(this.x + 30, this.y + 150, this.otherDirection);
-        bottle.throw();
         this.world.level.thrownBottles.push(bottle);
         this.bottles -= 1;
         this.world.bottleBar.setPercentage(this.bottles);
     }
 
     resetSleepingState() {
+        Sound.CHARACTER_SNORE.pause();
         this.isSleeping = false;
         this.sleepingFrameIndex = 0;
         this.lastSleepingFrameTime = 0;
     }
 
     playSleepingAnimation() {
+        this.setCharacterAsleep();
+        const now = Date.now();
+        if (now - this.lastSleepingFrameTime >= 1000) {
+            this.sleepingFrameIndex++;
+            const loopStart = this.IMAGES_SLEEPING.length - 10;
+            if (this.sleepingFrameIndex == loopStart) {
+                Sound.playSound(Sound.CHARACTER_SNORE);
+            }
+            if (this.sleepingFrameIndex >= this.IMAGES_SLEEPING.length) {
+                this.sleepingFrameIndex = loopStart;
+            }
+            this.loadImage(this.IMAGES_SLEEPING[this.sleepingFrameIndex]);
+            this.lastSleepingFrameTime = now;
+        }
+    }
+
+    setCharacterAsleep() {
         if (!this.isSleeping) {
             this.isSleeping = true;
             this.sleepingFrameIndex = 0;
             this.lastSleepingFrameTime = Date.now();
             this.loadImage(this.IMAGES_SLEEPING[0]);
             return;
-        }
-        const now = Date.now();
-        if (now - this.lastSleepingFrameTime >= 1000) {
-            this.sleepingFrameIndex++;
-            const loopStart = this.IMAGES_SLEEPING.length - 10;
-            if (this.sleepingFrameIndex >= this.IMAGES_SLEEPING.length) {
-                this.sleepingFrameIndex = loopStart;
-            }
-            this.loadImage(this.IMAGES_SLEEPING[this.sleepingFrameIndex]);
-            this.lastSleepingFrameTime = now;
         }
     }
 
@@ -175,5 +211,9 @@ class Character extends MovableObject {
 
     bottleHitEnemy(enemy) {
         enemy.hit(150);
+    }
+
+    playHurtSound() {
+        Sound.playSound(Sound.CHARACTER_HURT);
     }
 }   

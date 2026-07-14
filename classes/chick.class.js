@@ -42,4 +42,8 @@ class Chick extends MovableObject {
             }
         }, 100);
     }
+
+    playHurtSound() {
+        Sound.playSound(Sound.CHICK_DEAD);
+    }
 }

@@ -38,7 +38,6 @@ class Endboss extends MovableObject {
     }
 
     animate() {
-
         setInterval(() => {
             if (this.isDead()) return;
             this.moveLeft();
@@ -53,5 +52,9 @@ class Endboss extends MovableObject {
                 this.playAnimation(this.IMAGES_WALKING);
             }
         }, 200);
+    }
+
+        playHurtSound() {
+        Sound.playSound(Sound.CHICKEN_DEAD);
     }
 }

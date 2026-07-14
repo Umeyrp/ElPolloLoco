@@ -62,9 +62,11 @@ class World {
 
     checkCharacterEnemyCollisions() {
         this.level.enemies.forEach(enemy => {
-            if (this.character.isColliding(enemy)) {
-                if (this.character.isAboveGround() && this.character.speedY <= 0) {
+            if (!enemy.isDead() && this.character.isColliding(enemy)) {
+                if (this.character.isAboveGround() && this.character.speedY < 0) {
                     this.character.jumpOnEnemy(enemy);
+                    let enemyTopHitbox = enemy.y + enemy.offset.top;
+                    this.character.y = enemyTopHitbox - this.character.height + this.character.offset.bottom;
                     this.character.jump();
                 } else {
                     this.character.hit(5);
@@ -77,7 +79,8 @@ class World {
     checkBottleCollisions() {
         this.level.enemies.forEach(enemy => {
             this.level.thrownBottles.forEach((bottle, index) => {
-                if (bottle.isColliding(enemy)) {
+                if (!bottle.splashed && bottle.isColliding(enemy)) {
+                    Sound.playSound(Sound.BOTTLE_HIT);
                     bottle.splashed = true;
                     this.character.bottleHitEnemy(enemy);
                     if (enemy instanceof Endboss) {
@@ -93,11 +96,13 @@ class World {
         this.level.collectableObjects.forEach((object, index) => {
             if (this.character.isColliding(object)) {
                 if (object instanceof Coin) {
+                    Sound.playSound(Sound.COLLECT_COIN);
                     this.level.collectableObjects.splice(index, 1);
                     this.character.coins += 1;
                     this.coinBar.setPercentage(this.character.coins);
                 } else {
                     if (this.character.bottles < 5) {
+                        Sound.playSound(Sound.COLLECT_BOTTLE);
                         this.level.collectableObjects.splice(index, 1);
                         this.character.bottles += 1;
                         this.bottleBar.setPercentage(this.character.bottles);
