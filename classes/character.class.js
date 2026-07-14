@@ -73,11 +73,12 @@ class Character extends MovableObject {
         bottom: 10,
         left: 20
     };
-
     isWalking;
     isSleeping = false;
     sleepingFrameIndex = 0;
     lastSleepingFrameTime = 0;
+    statusInterval;
+    buttonsInterval;
 
     constructor() {
         super();
@@ -98,7 +99,7 @@ class Character extends MovableObject {
     }
 
     checkButtonInterval() {
-        setInterval(() => {
+        this.buttonsInterval = setInterval(() => {
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.moveRight();
                 this.otherDirection = false;
@@ -124,10 +125,13 @@ class Character extends MovableObject {
     }
 
     checkStatusInterval() {
-        setInterval(() => {
+        this.statusInterval = setInterval(() => {
             if (this.isDead()) {
                 this.resetStatus();
                 this.playAnimation(this.IMAGES_DEAD);
+                Sound.playSound(Sound.CHARACTER_DEAD);
+                clearInterval(this.buttonsInterval);
+                clearInterval(this.statusInterval);
             } else if (this.isHurt()) {
                 this.resetSleepingState();
                 this.playAnimation(this.IMAGES_HURT);
@@ -146,7 +150,7 @@ class Character extends MovableObject {
                 this.playSleepingAnimation();
             }
         }, 50);
-    }   
+    }
 
     resetStatus() {
         this.resetSleepingState();

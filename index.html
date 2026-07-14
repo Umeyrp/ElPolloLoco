@@ -9,9 +9,30 @@
     <title>ElPolloLoco</title>
 </head>
 
-<body onload="init()">
+<body>
     <h1>El pollo loco</h1>
-    <canvas id="canvas" width="720" height="480"></canvas>
+    <div class="game-container">
+        <canvas id="canvas" width="720" height="480"></canvas>
+        <div id="startscreen">
+            <img src="./img/9_intro_outro_screens/start/startscreen_1.png" class="game_screens" alt="Startscreen">
+            <div class="menu">
+                <button onclick="startGame()">Start Game</button>
+                <button onclick="showControls()">Controls</button>
+                <a href="./impressum.html">
+                    <button>Imprint</button>
+                </a>
+            </div>
+        </div>
+        <div id="winscreen" hidden>
+            <img src="./img/You won, you lost/You Win A.png" class="game_screens" alt="WinScreen">
+        </div>
+        <div id="gameoverscreen" hidden>
+            <img src="./img/You won, you lost/Game over A.png" class="game_screens" alt="GameOverScreen">
+        </div>
+        <button id="muteButton" onclick="toggleMute()">
+            <img id="muteIcon" src="./img/volume-mute.png" alt="Sound">
+        </button>
+    </div>
 </body>
 <script src="./classes/drawable-object.class.js"></script>
 <script src="./classes/movable-object.class.js"></script>

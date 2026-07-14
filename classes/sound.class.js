@@ -1,16 +1,16 @@
 class Sound {
     static CHARACTER_WALK = Sound.create('../audios/character_walk.mp3', 0.05);
-    static CHARACTER_JUMP = Sound.create('../audios/character_jump.mp3', 0.05);
+    static CHARACTER_JUMP = Sound.create('../audios/character_jump.mp3', 0.02);
     static CHARACTER_HURT = Sound.create('../audios/character_hurt.mp3', 0.05);
     static CHARACTER_SNORE = Sound.create('../audios/character_snore.mp3', 0.08, true);
     static CHARACTER_DEAD = Sound.create('../audios/character_dead.mp3', 0.3);
     static CHICKEN_DEAD = Sound.create('../audios/chicken_dead.mp3', 0.1);
     static CHICK_DEAD = Sound.create('../audios/chick_dead.mp3', 0.1);
-    static BOTTLE_THROW = Sound.create('../audios/bottle_throw.mp3', 0.2);
-    static BOTTLE_HIT = Sound.create('../audios/bottle_break.mp3', 0.15);
+    static BOTTLE_THROW = Sound.create('../audios/bottle_throw.mp3', 0.1);
+    static BOTTLE_HIT = Sound.create('../audios/bottle_break.mp3', 0.1);
     static COLLECT_COIN = Sound.create('../audios/collect_coin.mp3', 0.1);
     static COLLECT_BOTTLE = Sound.create('../audios/collect_bottle.mp3', 0.15);
-    static BACKGROUND_MUSIC = Sound.create('../audios/background_music.mp3', 0.4, true);
+    static BACKGROUND_MUSIC = Sound.create('../audios/background_music.mp3', 0.03, true);
     static allSounds = [
         Sound.CHARACTER_WALK,
         Sound.CHARACTER_DEAD,
@@ -24,7 +24,7 @@ class Sound {
         Sound.COLLECT_COIN,
         Sound.BACKGROUND_MUSIC
     ];
-    static Muted = false;
+    static isMuted = true;
 
     static create(path, volume, loop = false) {
         const audio = new Audio(path);
@@ -34,10 +34,12 @@ class Sound {
     }
 
     static playSound(sound) {
-        if (Sound.Muted) {
+        if (Sound.isMuted) {
             return;
         }
-        sound.currentTime = 0;
+        if (sound != Sound.BACKGROUND_MUSIC) {
+            sound.currentTime = 0;
+        }
         sound.play();
     }
 
@@ -46,5 +48,15 @@ class Sound {
             sound.pause();
             sound.currentTime = 0;
         });
+    }
+
+    static toggleMute() {
+        Sound.isMuted = !Sound.isMuted;
+        Sound.allSounds.forEach(sound => {
+            sound.muted = Sound.isMuted;
+        });
+        if (!Sound.isMuted) {
+            Sound.playSound(Sound.BACKGROUND_MUSIC);
+        }
     }
 }

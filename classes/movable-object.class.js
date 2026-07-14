@@ -54,9 +54,9 @@ class MovableObject extends DrawableObject {
 
     hit(damage) {
         if (Date.now() - this.lastHit < 350) return;
-        this.playHurtSound();
         this.lastHit = Date.now();
         if (!this.isDead()) {
+            this.playHurtSound();
             this.energy -= damage;
             if (this.isDead()) {
                 this.deadTime = Date.now();

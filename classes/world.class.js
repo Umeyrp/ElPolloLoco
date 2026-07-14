@@ -12,6 +12,7 @@ class World {
     bottleBar = new BottleBar(this.character.bottles, MAX_BOTTLES);
 
     constructor(canvas, keyboard) {
+        Sound.playSound(Sound.BACKGROUND_MUSIC);
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
@@ -26,6 +27,8 @@ class World {
             this.checkCollisions();
             this.removeOutOfWindowBottles();
             this.removeDeadEnemies();
+            this.checkGameOver();
+            this.checkWin();
         }, 1000 / 60);
     }
 
@@ -69,7 +72,7 @@ class World {
                     this.character.y = enemyTopHitbox - this.character.height + this.character.offset.bottom;
                     this.character.jump();
                 } else {
-                    this.character.hit(5);
+                    this.character.hit(20);
                     this.healthBarCharacter.setPercentage(this.character.energy);
                 }
             }
@@ -147,9 +150,9 @@ class World {
         // ----- Fixed Objects here ---- //
         this.ctx.translate(this.camera_x, 0); //Fix Forward
         this.addToMap(this.character);
+        this.addObjectsToMap(this.level.collectableObjects);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.thrownBottles);
-        this.addObjectsToMap(this.level.collectableObjects);
         this.ctx.translate(-this.camera_x, 0);
         let self = this;
         requestAnimationFrame(function () {
@@ -167,5 +170,29 @@ class World {
     flipImageBack(movingObject) {
         movingObject.x = movingObject.x * -1;
         this.ctx.restore();
+    }
+
+    checkGameOver() {
+        if (this.character.isDead()) {
+            setTimeout(() => {
+                showGameoverScreen();
+                Sound.stopAllSounds();
+                this.clearAllIntervals();
+            }, 1000);
+        }
+    }
+
+    checkWin() {
+        if (this.endboss.isDead()) {
+            setTimeout(() => {
+                showWinScreen();
+                Sound.stopAllSounds();
+                this.clearAllIntervals();
+            }, 1000);
+        }
+    }
+
+    clearAllIntervals() {
+        for (let i = 1; i < 9999; i++) window.clearInterval(i);
     }
 }
