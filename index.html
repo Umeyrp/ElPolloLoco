@@ -25,9 +25,18 @@
         </div>
         <div id="winscreen" hidden>
             <img src="./img/You won, you lost/You Win A.png" class="game_screens" alt="WinScreen">
+            <div class="end-menu">
+                <button onclick="restartGame()">Restart</button>
+                <button onclick="goHome()">Home</button>
+            </div>
         </div>
+
         <div id="gameoverscreen" hidden>
             <img src="./img/You won, you lost/Game over A.png" class="game_screens" alt="GameOverScreen">
+            <div class="end-menu">
+                <button onclick="restartGame()">Restart</button>
+                <button onclick="goHome()">Home</button>
+            </div>
         </div>
         <button id="muteButton" onclick="toggleMute()">
             <img id="muteIcon" src="./img/volume-mute.png" alt="Sound">

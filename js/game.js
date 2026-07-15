@@ -1,13 +1,11 @@
 let canvas;
 let world;
-let keyboard = new Keyboard();
+let keyboard;
 
 function startGame() {
-    createWorld();
-}
-function createWorld() {
     document.querySelector("#startscreen").style.display = "none";
     canvas = document.querySelector('#canvas');
+    keyboard = new Keyboard();
     world = new World(canvas, keyboard);
     ctx = canvas.getContext('2d');
 }
@@ -56,6 +54,18 @@ function showWinScreen() {
     document.querySelector('#winscreen').style.display = "block";
 }
 
+function restartGame() {
+    document.querySelector('#gameoverscreen').style.display = "none";
+    document.querySelector('#winscreen').style.display = "none";
+    startGame();
+}
+
+function goHome() {
+    document.querySelector('#gameoverscreen').style.display = "none";
+    document.querySelector('#winscreen').style.display = "none";
+    document.querySelector('#startscreen').style.display = "block";
+}
+
 function toggleMute() {
     Sound.toggleMute();
     updateMuteIcon();
@@ -66,7 +76,11 @@ function updateMuteIcon() {
     if (!muteIcon) {
         return;
     }
-
     muteIcon.src = Sound.isMuted ? './img/volume-mute.png' : './img/volume.png';
     muteIcon.alt = Sound.isMuted ? 'Muted' : 'Volume';
+}
+
+function clearAllIntervals() {
+    for (let i = 1; i < 9999; i++) window.clearInterval(i) + console.log("e");
+    ;
 }

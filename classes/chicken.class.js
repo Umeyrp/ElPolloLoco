@@ -33,7 +33,6 @@ class Chicken extends MovableObject {
         setInterval(() => {
             if (this.isDead()) return;
             this.moveLeft();
-            // if (!this.isAboveGround()) this.jump();
         }, 1000 / 60);
 
         setInterval(() => {

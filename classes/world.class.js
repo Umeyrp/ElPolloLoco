@@ -1,6 +1,6 @@
 class World {
     character = new Character();
-    level = level1;
+    level = createLevel();
     endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
     canvas;
     ctx;
@@ -177,7 +177,7 @@ class World {
             setTimeout(() => {
                 showGameoverScreen();
                 Sound.stopAllSounds();
-                this.clearAllIntervals();
+                clearAllIntervals();
             }, 1000);
         }
     }
@@ -187,12 +187,8 @@ class World {
             setTimeout(() => {
                 showWinScreen();
                 Sound.stopAllSounds();
-                this.clearAllIntervals();
+                clearAllIntervals();
             }, 1000);
         }
-    }
-
-    clearAllIntervals() {
-        for (let i = 1; i < 9999; i++) window.clearInterval(i);
     }
 }
